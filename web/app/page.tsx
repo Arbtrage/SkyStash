@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Auth } from "@/components/blocks/auth";
+import { Auth } from "@/components/template/auth";
 
 export default function Home() {
   return (
