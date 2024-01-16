@@ -15,12 +15,13 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
+import { useRouter } from 'next/navigation'
 import { login, register } from "@/redux/slices/user/userSlice";
 
 
 export function Auth() {
 
-
+  const router = useRouter()
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -45,12 +46,22 @@ export function Auth() {
   
   const handleLogin = async(event:any) => {
     event.preventDefault();
-    await dispatch(login(formData));
+    try {
+      await dispatch(login(formData));
+      router.push('/dashboard')
+    } catch (error:any) {
+      console.log(error.message);
+    }
   };
 
   const handleRegister = async(event:any) => {
     event.preventDefault();
-    await dispatch(register(formData));
+    try {
+      await dispatch(register(formData));
+      router.push('/dashboard')
+    } catch (error:any) {
+      console.log(error.message);
+    }
   };
 
 
