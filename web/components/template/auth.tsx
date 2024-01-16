@@ -1,5 +1,6 @@
 "use client";
 
+import { ReactEventHandler, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,8 +13,47 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store";
+import { login, register } from "@/redux/slices/user/userSlice";
+
 
 export function Auth() {
+
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const dispatch: AppDispatch = useDispatch();
+  const validateForm = () => {
+    let isValid = true;
+    if (!formData.email) {
+      isValid = false;
+    }
+    if (!formData.password) {
+      isValid = false;
+    }
+    return isValid;
+  };
+  const handleInputChange = (e:any) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+  
+  const handleLogin = async(event:any) => {
+    event.preventDefault();
+    await dispatch(login(formData));
+  };
+
+  const handleRegister = async(event:any) => {
+    event.preventDefault();
+    await dispatch(register(formData));
+  };
+
+
   return (
     <Tabs defaultValue="login" className="w-[400px]">
       <TabsList className="grid w-full grid-cols-2">
@@ -24,22 +64,36 @@ export function Auth() {
         <Card>
           <CardHeader>
             <CardTitle>Login</CardTitle>
-            <CardDescription>
-              Welcome back !
-            </CardDescription>
+            <CardDescription>Welcome back !</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="email@email.com" />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" placeholder="password" />
-            </div>
+            <form onSubmit={handleLogin} noValidate>
+              <div className="space-y-1">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="email@email.com"
+                />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  placeholder="password"
+                />
+              </div>
+            </form>
           </CardContent>
           <CardFooter>
-            <Button>Login</Button>
+            <Button type="submit" onClick={handleLogin}>Login</Button>
           </CardFooter>
         </Card>
       </TabsContent>
@@ -52,17 +106,33 @@ export function Auth() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="email@email.com" />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" placeholder="password" />
-            </div>
+            <form onSubmit={handleRegister} noValidate>
+              <div className="space-y-1">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="email@email.com"
+                />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  placeholder="password"
+                />
+              </div>
+            </form>
           </CardContent>
           <CardFooter>
-            <Button>Register</Button>
+            <Button type="submit" onClick={handleRegister}>Register</Button>
           </CardFooter>
         </Card>
       </TabsContent>
