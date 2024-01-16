@@ -64,6 +64,16 @@ export class AuthService {
             refresh_Token:refreshToken,
           },
         });
+        await this.prisma.user.create({
+          data: {
+            name: userData.email,
+            Auth: {
+              connect: {
+                id: user.id
+              }
+            }
+          }
+        });
         return { accessToken, refreshToken };
       } catch (error) {
         throw new BadRequestException("Some error happened")
@@ -100,11 +110,10 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
   async logout(user: any) {
-    console.log(user);
-    // await this.prisma.auth.update({
-    //   where: { id: user.id },
-    //   data: { refresh_Token: null },
-    // });
+    await this.prisma.auth.update({
+      where: { id: user.id },
+      data: { refresh_Token: null },
+    });
 
     return {
       message: 'User logged out successfully',
