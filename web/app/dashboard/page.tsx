@@ -10,23 +10,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { getFolders,deleteFolder } from "@/lib/api";
+import { getFolders, deleteFolder } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import FolderAddForm from "@/components/template/FolderAddForm";
+import RenameForm from "@/components/template/Rename";
+
 interface DropdownProps {
   folderId: number;
   onViewFiles: (folderId: number) => void;
 }
 export default function Home() {
-
   const router = useRouter();
   const [folders, setFolders] = useState<any>();
   useEffect(() => {
@@ -35,39 +28,13 @@ export default function Home() {
     });
   }, []);
 
-  
   const viewFiles = (folderId: number) => {
     console.log(`View files for folder with ID: ${folderId}`);
     router.push(`/dashboard/${folderId}`);
   };
-  const deleteF = async(folderId: number) => {
+  const deleteF = async (folderId: number) => {
     await deleteFolder(String(folderId));
-  }
-  function Dropdown({ folderId, onViewFiles }: DropdownProps) {
-    const viewFilesHandler = () => {
-      onViewFiles(folderId);
-    };
-    const deleteFolderHandler = () => {
-      deleteF(folderId);
-    }
-
-    return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon">
-            <DotsHorizontalIcon className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuItem onClick={viewFilesHandler}>
-            View Files
-          </DropdownMenuItem>
-          <DropdownMenuItem>Rename</DropdownMenuItem>
-          <DropdownMenuItem onClick={deleteFolderHandler}>Delete</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    );
-  }
+  };
   function TableData() {
     return (
       <Table>
@@ -81,14 +48,16 @@ export default function Home() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {folders?.map((folder:any,index:number) => (
+          {folders?.map((folder: any, index: number) => (
             <TableRow key={index}>
               <TableCell className="font-medium">{index}</TableCell>
               <TableCell>{folder.name}</TableCell>
               <TableCell>{folder.description}</TableCell>
               <TableCell>{folder.files}</TableCell>
-              <TableCell className="text-center" id={folder.id}>
-                <Dropdown folderId={folder.id} onViewFiles={viewFiles} />
+              <TableCell className="flex flex-row gap-2 justify-center" id={folder.id}>
+                <Button variant={"outline"} onClick={() => viewFiles(folder.id)}>Open</Button>
+                <RenameForm folderId={folder.id} type={"folder"} />
+                <Button variant={"destructive"} onClick={() => deleteF(folder.id)}>Delete</Button>
               </TableCell>
             </TableRow>
           ))}
@@ -100,7 +69,7 @@ export default function Home() {
     <main className="flex flex-col">
       <div className="w-full flex justify-between mb-10">
         <div>Hello</div>
-        <FolderAddForm/>
+        <FolderAddForm />
       </div>
       <div className="mx-20">
         <TableData />

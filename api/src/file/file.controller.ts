@@ -3,6 +3,7 @@ import {
     MaxFileSizeValidator,
     ParseFilePipe,
     Post,
+    Put,
     Get,
     Query,
     UploadedFile,
@@ -30,10 +31,10 @@ export class FileController {
         return this.fileService.deleteFile(folderId);
     }
 
-    @Post("/rename")
+    @Put("/rename")
     @UseGuards(JwtAuthGuard)
-    async renameFile(@GetCurrentUser() user: JwtPayload) {
-        return this.fileService.modifyFile(user);
+    async renameFile(@Body() data: any, @Query('id') fileId: string) {
+        return this.fileService.modifyFile(data.id,fileId);
     }
     @Post("/add")
     @UseGuards(JwtAuthGuard)

@@ -11,8 +11,15 @@ export async function deleteFolder(folderId:string) {
     return response;   
 }
 
-export async function renameFolder() {
-
+export async function modify(item: any) {
+    console.log(item);
+    const data = {
+        name: item.formData.name,
+    }
+    const id = item.item.folderId ? item.item.folderId : item.item.fileId;
+    const response = await axiosInstance.put(`${item.item.type}/rename`, data,{params:{id:String(id)}});
+    console.log(response);
+    return response;
 }
 
 export async function getFolders() {
@@ -23,10 +30,6 @@ export async function getFolders() {
 export async function getFilesByFolderId(folderId:string) {
     const files = await axiosInstance.get("/file/all", {params: {folderId: folderId}});
     return files;
-}
-
-export async function renameFile() {
-
 }
 
 export async function deleteFile() {

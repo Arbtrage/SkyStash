@@ -44,15 +44,14 @@ export class FolderService {
         }
     }
 
-    async modifyFolder(data: any) {
+    async modifyFolder(name:string,id:string) {
         try {
             await this.prisma.folder.update({
                 where: {
-                    id: data.id,
+                    id: id,
                 },
                 data: {
-                    name: data.name,
-                    description: data.description,
+                    name:name,
                 },
             });
         } catch (error) {
@@ -92,7 +91,6 @@ export class FolderService {
                 UserId: userData.User.id,
             }
         })
-        if(folders.length==0) throw new NotFoundException("No folders found")
         return folders;
     }
 }

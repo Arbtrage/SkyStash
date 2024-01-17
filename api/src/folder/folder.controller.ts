@@ -1,4 +1,4 @@
-import { Controller, Post, Query, Get, UseGuards, Body, Delete } from '@nestjs/common';
+import { Controller, Post, Query, Put,Get, UseGuards, Body, Delete } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { GetCurrentUser } from '../common/decorators/get-current-user.decorator';
 import { JwtPayload } from '../common/types/Jwt-Payload.type';
@@ -14,10 +14,11 @@ export class FolderController {
         return this.folderService.deleteFolder(folderId);
     }
 
-    @Post("/rename")
+    @Put("/rename")
     @UseGuards(JwtAuthGuard)
-    async renameFolder(@Body() data: any) {
-        return this.folderService.modifyFolder(data);
+    async renameFolder(@Body() data: any, @Query('id') folderId: string) {
+        console.log(data, folderId);
+        return this.folderService.modifyFolder(data.name,folderId);
     }
     @Post("/add")
     @UseGuards(JwtAuthGuard)

@@ -64,35 +64,19 @@ export class FileService {
             throw new BadRequestException('Failed to retrieve file.');
         }
     }
-    async modifyFile(data: any) {
+    async modifyFile(name:string,id:string) {
         try {
-            const fileBucket = admin.storage().bucket();
-            const file = fileBucket.file(data.oldFileName);
-
-            // Check if the file exists
-            const [exists] = await file.exists();
-            if (!exists) {
-                throw new NotFoundException('File not found.');
-            }
-
-            // Update the file metadata to change the name
-            await file.setMetadata({
-                metadata: {
-                    // Update other metadata properties if needed
+            await this.prisma.file.update({
+                where: {
+                    id: id,
                 },
-                contentDisposition: `inline; filename="${data.newFileName}"`,
+                data: {
+                    name:name,
+                },
             });
-
-            // Generate a signed URL for temporary access to the modified file
-            const signedUrl = await file.getSignedUrl({
-                action: 'read',
-                expires: '03-17-2024', // Adjust the expiration date as needed
-            });
-
-            return signedUrl[0];
         } catch (error) {
-            console.error('Error modifying file in Firebase Cloud Storage:', error);
-            throw new BadRequestException('Failed to modify file.');
+            console.error('Error modifying folder:', error);
+            throw new NotFoundException('Failed to modify folder.');
         }
     }
     async deleteFile(data: any) {
