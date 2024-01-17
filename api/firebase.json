@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "sky-stash",
+  "private_key_id": "895312e7d40930a77d5aa4f190add9639597ccea",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC0HPxvJWTyub2Z\n02gPdn5LaJeY+dNX29bWvkbyeFoheqBs+fxlN84DZIH5LWIHp1rYfF5r9EMEYT8o\nnaQoPFiNq5hHu8CpRGZbgmJ+izFp2Xs/IKyCR1vjH30FE5W88h9XaW4fYS9Z8Xhs\ny9v3JaX6WXBnNWXutYS1C4Oye8/w0qxnTDdoayEu0snVJOztiGWfo/wQ2748yw5n\nqv655jq8bm5bpIYqGkureJbkM8DbB+A9APHjC0VXZgSoBUddjWort6YTxc0b2L4N\nHyskgYy3mi8KMnJaaqWLEP0u2mPpZYWSuOrh7xeGnSRs3T9JSmmDg9+2omTNrcVz\n45ICb8wpAgMBAAECggEACp2pwEhRNKA/fV1RRRYMGBg8VTMmYoeN2F7jMh/nWhFO\n+tVaK8IYBamrIntrC33w9BEShKTjPVMZBKUT+54g7wq14UZ+8ssaCFs9QG2mVjGQ\nGtarbEtV7mNY/E9c9EPGFqIbcESLZK7/lNQILT8+Eu0qG58xWJpAzeX1l3PGPBCp\nchpofCOg+14e55s5lggysULLDyo4WqVrpiIB87Kbh45DIFWCwotPYoydozeSDGNf\nVIDT8V+OPX8DP/jpiOEz69uCdQvH+c3pqIbINaQRsaG8WMJTf0z6oriwX1IThJBz\nneIv/nisSY7VEgc8JWid1uOcDZQkWU3Spy9xcamC3QKBgQDXguNwKi9iBCrgLetV\noS5O3b8jxd6bK+oYd0p3Xmy1rBebMrEIAVa34JGSreGvaZzYmXyLI49blcSGGsnm\nyrtHjnliK3ef1xiKsfQmg6kPKbDzN24JgkTWkouxuAIuHdyAMag2ce5wfgEkcnSF\ne6iJUj/s6dcGDmEDqjAU8P+F5QKBgQDV85y/c+hmLWqCInxuo3//1E1v7kDAdYOk\n1SUGjoSwP0Im388E8L2/+TpX+iFF2hpo2rrEJdxmjAPUJUU37Z35Y0ZL9L/E4Zy6\n2369Ww6ls/17WOk1MR9EpMMOU2hu4X2TpbR537aCARiNrmfaSNn6EnONuDhQFnSS\n7n5Px4eI9QKBgGQuSw27/nTA3TGDBw+yMnWk7RJzC8z0OAkRgwNEWKKHEh4qDVNc\nU/R8Jw+ZVv0Uyj2B8/w2FpELaOSyFUL84Nwdpd11uVELSzRGDunMcE1FIyWckcFH\n1josu1Vs5U6MwRCyhLBye9W9LUjFD9dxKWJUYrT96t+81Wo/tcQ2V4HlAoGAOBUa\noojkg1wmTiRyD6JmHA5vmgaPDKQBNQT2JqjXGUgLtBr4rifY5WiUJZmYfTH1uESV\nrnLqOis7mbGHWmi7/zJJrAFk/1vQdJ6yszoaNc9fg6TDxMCynJC/3JJ6jo4nF7vY\n+hVtRti4sfLkoDB2ivmpNp3yjPPF7Pn9PDZmTb0CgYAlhgKAa4xvBbPGHXCJ7ahq\nv4siC81TjZT9Mu/8ZHWGQPga/2SDlN0yhFaEoN869U/fWgFu3ZmykwIjT991luNA\nrx/FxGqnElUIGZt1ysxzWcGaJw6C3kLK3egvRfB+tlJb/r2DPERmmQipTjPvlA+c\n0nuUbIwiLKjY+wjN6XFM4w==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-f390h@sky-stash.iam.gserviceaccount.com",
+  "client_id": "103676396431601179848",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-f390h%40sky-stash.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

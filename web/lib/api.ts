@@ -1,11 +1,14 @@
 import { axiosInstance } from "./axiosInstance";
 
-export async function createFolder() {
-
+export async function createFolder(data: any) {
+    await axiosInstance.post("/folder/add", data);
+    return "created";
 }
 
-export async function deleteFolder() {
-
+export async function deleteFolder(folderId:string) {
+    const response = await axiosInstance.delete("/folder/delete", { params: { folderId: folderId } });
+    console.log(response);
+    return response;   
 }
 
 export async function renameFolder() {
@@ -13,11 +16,13 @@ export async function renameFolder() {
 }
 
 export async function getFolders() {
-    return [{ id: 1, name: "Hfsd", description: "asdasd", files: 5 }, { id: 2, name: "Hfsd", description: "asdasd", files: 5 }];
+    const folders=await axiosInstance.get("/folder/all");
+    return folders;
 }
 
-export async function getFilesByFolderId() {
-    return [{ id: 1, name: "Hfsd", description: "asdasd", type:'pdf' }, { id: 2, name: "Hfsd", description: "asdasd", type:'image' }];
+export async function getFilesByFolderId(folderId:string) {
+    const files = await axiosInstance.get("/file/all", {params: {folderId: folderId}});
+    return files;
 }
 
 export async function renameFile() {

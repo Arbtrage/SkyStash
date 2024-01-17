@@ -2,17 +2,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
-import { cn } from "@/lib/utils";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Table,
   TableBody,
@@ -29,25 +18,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { getFolders } from "@/lib/api";
+import { getFolders,deleteFolder } from "@/lib/api";
 import { useRouter } from "next/navigation";
-
-interface ProfileFormProps {
-  className?: string;
-}
-
+import FolderAddForm from "@/components/template/FolderAddForm";
 interface DropdownProps {
   folderId: number;
   onViewFiles: (folderId: number) => void;
 }
-
 export default function Home() {
 
   const router = useRouter();
-  const [folders, setFolders] = useState([]);
+  const [folders, setFolders] = useState<any>();
   useEffect(() => {
-    getFolders().then((res:any) => {
-      setFolders(res);
+    getFolders().then((res: any) => {
+      setFolders(res.data);
     });
   }, []);
 
@@ -56,51 +40,16 @@ export default function Home() {
     console.log(`View files for folder with ID: ${folderId}`);
     router.push(`/dashboard/${folderId}`);
   };
-
-  function FolderModal({ className }: ProfileFormProps) {
-    const addFolder = async (event: any) => {
-      event.preventDefault();
-      console.log(formData);
-    };
-    const [formData, setFormData] = useState({
-      name: "",
-      description: "",
-    });
-    const handleInputChange = (e: any) => {
-      setFormData({
-        ...formData,
-        [e.target.name]: e.target.value,
-      });
-    };
-    return (
-      <form className={cn("grid items-start gap-4", className)}>
-        <div className="grid gap-2">
-          <Label htmlFor="name">Folder Name</Label>
-          <Input
-            type="name"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="description">Folder Description</Label>
-          <Input
-            id="description"
-            name="description"
-            value={formData.description}
-            onChange={handleInputChange}
-          />
-        </div>
-        <Button onClick={addFolder}>Add</Button>
-      </form>
-    );
+  const deleteF = async(folderId: number) => {
+    await deleteFolder(String(folderId));
   }
   function Dropdown({ folderId, onViewFiles }: DropdownProps) {
     const viewFilesHandler = () => {
       onViewFiles(folderId);
     };
+    const deleteFolderHandler = () => {
+      deleteF(folderId);
+    }
 
     return (
       <DropdownMenu>
@@ -114,7 +63,7 @@ export default function Home() {
             View Files
           </DropdownMenuItem>
           <DropdownMenuItem>Rename</DropdownMenuItem>
-          <DropdownMenuItem>Delete</DropdownMenuItem>
+          <DropdownMenuItem onClick={deleteFolderHandler}>Delete</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     );
@@ -132,9 +81,9 @@ export default function Home() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {folders.map((folder) => (
-            <TableRow key={folder.id}>
-              <TableCell className="font-medium">{folder.id}</TableCell>
+          {folders?.map((folder:any,index:number) => (
+            <TableRow key={index}>
+              <TableCell className="font-medium">{index}</TableCell>
               <TableCell>{folder.name}</TableCell>
               <TableCell>{folder.description}</TableCell>
               <TableCell>{folder.files}</TableCell>
@@ -151,20 +100,7 @@ export default function Home() {
     <main className="flex flex-col">
       <div className="w-full flex justify-between mb-10">
         <div>Hello</div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>Add Folder</Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>New Folder</DialogTitle>
-              <DialogDescription>
-                Make changes to your profile here. Click save when you&apos;re done.
-              </DialogDescription>
-            </DialogHeader>
-            <FolderModal />
-          </DialogContent>
-        </Dialog>
+        <FolderAddForm/>
       </div>
       <div className="mx-20">
         <TableData />

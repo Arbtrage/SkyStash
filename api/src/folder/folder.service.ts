@@ -36,6 +36,7 @@ export class FolderService {
                     },
                 },
             });
+            return "New Folder Added";
         } catch (error) {
             // Handle errors, log, and optionally rethrow
             console.error('Error adding folder:', error);
@@ -43,7 +44,7 @@ export class FolderService {
         }
     }
 
-    async modifyFolder(user: any, data: any) {
+    async modifyFolder(data: any) {
         try {
             await this.prisma.folder.update({
                 where: {
@@ -55,13 +56,12 @@ export class FolderService {
                 },
             });
         } catch (error) {
-            // Handle errors, log, and optionally rethrow
             console.error('Error modifying folder:', error);
             throw new NotFoundException('Failed to modify folder.');
         }
     }
 
-    async deleteFolder(user: any, data: string) {
+    async deleteFolder(data: string) {
         try {
             await this.prisma.folder.delete({
                 where: {
@@ -69,9 +69,30 @@ export class FolderService {
                 },
             });
         } catch (error) {
-            // Handle errors, log, and optionally rethrow
             console.error('Error deleting folder:', error);
             throw new NotFoundException('Failed to delete folder.');
         }
+    }
+    async getAllFolders(user: any) {
+        const userData = await this.prisma.auth.findUnique({
+            where: {
+                id: user.id,
+            },
+            select: {
+                id: true,
+                User: {
+                    select: {
+                        id: true,
+                    },
+                },
+            },
+        });
+        const folders = await this.prisma.folder.findMany({
+            where: {
+                UserId: userData.User.id,
+            }
+        })
+        if(folders.length==0) throw new NotFoundException("No folders found")
+        return folders;
     }
 }

@@ -2,17 +2,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
-import { cn } from "@/lib/utils";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Table,
   TableBody,
@@ -32,6 +21,7 @@ import {
 import { getFilesByFolderId } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import FileUploadForm from "@/components/template/FileUploadForm";
 
 interface ProfileFormProps {
   className?: string;
@@ -44,6 +34,15 @@ interface DropdownProps {
 
 export default function Home() {
   const currentPage = usePathname();
+  const url = currentPage;
+  const dashboardIndex = url.indexOf("/dashboard/");
+  let itemId = "";
+  if (dashboardIndex !== -1) {
+    itemId = url.slice(dashboardIndex + "/dashboard/".length);
+    console.log(itemId); // This will print '1'
+  } else {
+    console.log("Invalid URL format");
+  }
 
   const router = useRouter();
 
@@ -52,47 +51,7 @@ export default function Home() {
     router.push(`/dashboard/${fileId}`);
   };
 
-  function FolderModal({ className }: ProfileFormProps) {
-    const addFolder = async (event: any) => {
-      event.preventDefault();
-      console.log(formData);
-    };
-    const [formData, setFormData] = useState({
-      name: "",
-      description: "",
-    });
-    const handleInputChange = (e: any) => {
-      setFormData({
-        ...formData,
-        [e.target.name]: e.target.value,
-      });
-    };
-    return (
-      <form className={cn("grid items-start gap-4", className)}>
-        <div className="grid gap-2">
-          <Label htmlFor="name">Folder Name</Label>
-          <Input
-            type="name"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="grid gap-2">
-          <Label htmlFor="description">Folder Description</Label>
-          <Input
-            id="description"
-            name="description"
-            value={formData.description}
-            onChange={handleInputChange}
-          />
-        </div>
-        <Button onClick={addFolder}>Add</Button>
-      </form>
-    );
-  }
-  function Dropdown({ fileId, onViewFiles }: DropdownProps) {
+    function Dropdown({ fileId, onViewFiles }: DropdownProps) {
     const viewFilesHandler = () => {
       onViewFiles(fileId);
     };
@@ -114,11 +73,11 @@ export default function Home() {
     );
   }
   function TableData() {
-    const [files, setFiles] = useState([]);
+    const [files, setFiles] = useState<any>();
 
     useEffect(() => {
-      getFilesByFolderId().then((res:any) => {
-        setFiles(res);
+      getFilesByFolderId(itemId).then((res:any) => {
+        setFiles(res.data);
       });
     }, []);
 
@@ -129,17 +88,15 @@ export default function Home() {
             <TableHead className="w-[100px]">Sl. No</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Description</TableHead>
-            <TableHead>Type</TableHead>
             <TableHead className="text-center">Options</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {files.map((file) => (
-            <TableRow key={file.id}>
-              <TableCell className="font-medium">{file.id}</TableCell>
+          {files?.map((file:any,index:any) => (
+            <TableRow key={index}>
+              <TableCell className="font-medium">{index}</TableCell>
               <TableCell>{file.name}</TableCell>
               <TableCell>{file.description}</TableCell>
-              <TableCell>{file.type}</TableCell>
               <TableCell className="text-center" id={file.id}>
                 <Dropdown fileId={file.id} onViewFiles={viewFile} />
               </TableCell>
@@ -153,20 +110,7 @@ export default function Home() {
     <main className="flex flex-col">
       <div className="w-full flex justify-between mb-10">
         <div>Hello</div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>Add File</Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>New File</DialogTitle>
-              <DialogDescription>
-                Make changes to your file here. Click save when you&apos;re done.
-              </DialogDescription>
-            </DialogHeader>
-            <FolderModal />
-          </DialogContent>
-        </Dialog>
+          <FileUploadForm value={itemId} />
       </div>
       <div className="mx-20">
         <TableData />
